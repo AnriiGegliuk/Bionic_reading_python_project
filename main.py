@@ -24,6 +24,25 @@ if user_input:
     # Extract only the contents within the <b> tags
     b_tags = soup.find_all('b', class_='bionic-b bionic')
 
+    # Create a list to store the formatted words
+    formatted_words = []
+
+    # Iterate through the <b> tags
+    for tag in b_tags:
+        # Extract the bold text
+        bold_text = tag.text
+
+        # Find the next sibling (non-bold text)
+        sibling = tag.next_sibling
+        if sibling:
+            normal_text = sibling.string
+        else:
+            normal_text = ""
+
+        # Combine bold and normal text
+        formatted_word = f"<b>{bold_text}</b>{normal_text}"
+        formatted_words.append(formatted_word)
+
     # Join the extracted contents and display the result
-    bionic_text = ' '.join([tag.text for tag in b_tags])
-    st.markdown(bionic_text, unsafe_allow_html=True)
+    bionic_text = ' '.join(formatted_words)
+    st.write(bionic_text, unsafe_allow_html=True)
